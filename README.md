@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/22632606/README.md)
 # 날씨별 패션 가이드 🌦️👕
 
 날씨에 맞는 패션 스타일을 추천해주는 웹사이트입니다. 현재 날씨와 기온을 기반으로 최적의 패션 아이템을 추천해드립니다.
