@@ -49,12 +49,137 @@ header {
     margin-bottom: 2rem;
     transition: all 0.3s ease;
     background: white;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.fashion-img-container {
+    width: 100%;
+    height: 300px; /* Increased height for better model display */
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
+    background-size: 200% 200%;
+    animation: shimmer 2s infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #eee;
+    border-radius: 8px 8px 0 0;
+}
+
+.fashion-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center; /* Better framing for model images */
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    background-color: #fff;
+    display: block;
+    opacity: 0; /* Start invisible, fade in when loaded */
+    will-change: transform, opacity; /* Optimize animations */
+}
+
+/* Loading animation */
+
+.fashion-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+/* Fallback for broken images */
+.fashion-img:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 200%;
+    z-index: 1;
+}
+
+.fashion-img:after {
+    content: '이미지를 불러오는 중...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    color: #6b7280;
+    font-size: 14px;
+    text-align: center;
+}
+
+.fashion-img[src*="unsplash"]:before,
+.fashion-img[src*="unsplash"]:after {
+    display: none;
+}
+
+/* Hover effects */
+.fashion-item:hover .fashion-img {
+    transform: scale(1.05);
+}
+
+/* AI 생성 이미지 로딩 상태 */
+.fashion-img[src*="placeholder.com"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 200%;
+    animation: shimmer 2s infinite;
+    color: #6b7280;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.fashion-img::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+    z-index: 1;
+}
+
+.fashion-item:hover .fashion-img {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+}
+
+/* AI 생성 이미지 툴팁 */
+.fashion-img[src*="placeholder.com"]::after {
+    content: 'AI가 패션 이미지를 생성 중입니다...';
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #4b5563;
+    font-size: 12px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    margin: 0 10px;
 }
 
 .fashion-item:hover {
@@ -62,17 +187,13 @@ header {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.fashion-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
 .fashion-content {
-    padding: 1.25rem;
+    padding: 15px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    background: white;
+    z-index: 2;
 }
 
 .fashion-title {
@@ -103,6 +224,33 @@ header {
     border-radius: 50px;
     font-size: 0.75rem;
     color: #495057;
+}
+
+/* 이미지 로딩 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fashion-img {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 이미지가 로드되지 않았을 때의 폴백 스타일 */
+.fashion-img[style*="background-image: none"],
+.fashion-img:not([style*="background-image"]) {
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fashion-img[style*="background-image: none"]::after,
+.fashion-img:not([style*="background-image"])::after {
+    content: '이미지 준비 중';
+    color: #999;
+    font-size: 14px;
+    z-index: 2;
 }
 
 /* 반응형 디자인 */
